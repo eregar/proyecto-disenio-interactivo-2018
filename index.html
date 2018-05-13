@@ -151,7 +151,7 @@ window.addEventListener('load', function() {
 
   function handleAuthentication() {
       webAuth.parseHash(function(err, authResult) {
-        if (authResult && authResult.accessToken && authResult.idToken) {
+        if (authResult) {
           window.location.hash = '';
           console.log(authResult);
         } else if (err) {
