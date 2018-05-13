@@ -162,6 +162,7 @@ window.addEventListener('load', function() {
     localStorage.removeItem('access_token');
     localStorage.removeItem('id_token');
     name="no has iniciado sesion";
+    appb.setnickname();
   }
 
   function handleAuthentication() {
@@ -169,8 +170,6 @@ window.addEventListener('load', function() {
         if (authResult) {
           window.location.hash = '';
           setSession(authResult);
-          console.log(authResult.accessToken);
-          console.log(authResult.idToken);
         } else if (err) {
           console.log(err);
           alert(
@@ -187,10 +186,8 @@ window.addEventListener('load', function() {
      if (profile) {
        var userProfile = profile;
        console.log(userProfile);
-       console.log(userProfile.nickname);
        name=userProfile.nickname;
        appb.setnickname();
-       console.log(name);
      }
      else{
        console.log("se intento lololol");
