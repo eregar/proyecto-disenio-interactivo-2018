@@ -142,29 +142,31 @@ window.addEventListener('load', function() {
     redirectUri: window.location.href
   });
   handleAuthentication();
-  
+
   var loginBtn = document.getElementById('btn-login');
   loginBtn.addEventListener('click', function(e) {
     e.preventDefault();
     webAuth.authorize();
   });
+
+  function handleAuthentication() {
+      webAuth.parseHash(function(err, authResult) {
+        if (authResult && authResult.accessToken && authResult.idToken) {
+          window.location.hash = '';
+          console.log(authResult);
+        } else if (err) {
+          homeView.style.display = 'inline-block';
+          console.log(err);
+          alert(
+            'Error: ' + err.error + '. Check the console for further details.'
+          );
+        }
+
+      });
+    }
 });
 
-function handleAuthentication() {
-    webAuth.parseHash(function(err, authResult) {
-      if (authResult && authResult.accessToken && authResult.idToken) {
-        window.location.hash = '';
-        console.log(authResult);
-      } else if (err) {
-        homeView.style.display = 'inline-block';
-        console.log(err);
-        alert(
-          'Error: ' + err.error + '. Check the console for further details.'
-        );
-      }
 
-    });
-  }
 
 
 
