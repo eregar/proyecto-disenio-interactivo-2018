@@ -146,9 +146,11 @@ window.addEventListener('load', function() {
   loginBtn.addEventListener('click', function(e) {
     e.preventDefault();
     webAuth.authorize();
+    console.log(authResult);
   });
-
 });
+
+
 
 
 
