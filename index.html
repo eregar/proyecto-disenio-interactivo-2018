@@ -1,0 +1,175 @@
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<!-- developement kit vue-->
+<html lang="en">
+<head>
+<script async src="https://cdn.ampproject.org/v0.js"></script>
+<title>proyecto</title>
+<meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.14/semantic.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+
+<body>
+  <div>
+  <div class="ui grid">
+    <div class="row">
+      <div class="red twelve wide column">
+        <p class="titulo">ToDoList</p>
+      </div>
+      <div class="black four wide column">
+        <div class="ui padded grid">
+          <div class= "right floated column" id="appb">
+            <p style="color: white; text-align: center; font-size: 1.2vw">
+               {{status}}
+              <button id="btn-login">login</button>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div class="ui centered grid" id="app">
+  <div class='row'>
+    <div class="eight wide column row">
+    <div class="ui fluid input">
+      <input v-model="mess2.text">
+    </div>
+  </div>
+  <div class="four wide column">
+    <div class="ui fluid action input">
+      <input v-model="mess2.date">
+      <button v-on:click="addthis()" class="ui red button">add</button>
+    </div>
+  </div>
+  </div>
+  <div class="row">
+  <div class="red eight wide column row"></div>
+  <div class="blue four wide column"></div>
+  </div>
+  <div class="row" v-for="(task, index) in tasks">
+    <div class="grey eight wide column">{{task.text}}</div>
+    <div class="grey four wide column">
+      {{task.date}}
+      <button class="ui red button"style="float:right;" v-on:click="deletthis(index)">-</button>
+    </div>
+  </div>
+  <div id=gp>
+  <amp-img alt="hola pto" src="kokook.jpg" width="300" height="300"></amp-img>
+  </div>
+</div>
+</div>
+</body>
+<script src="https://cdn.auth0.com/js/auth0/9.3.1/auth0.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.13.0/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDt9rFr2XngLvJtkG9Fd2oV-oAQU4ETM1I",
+    authDomain: "proyecto-paginaweb.firebaseapp.com",
+    databaseURL: "https://proyecto-paginaweb.firebaseio.com",
+    projectId: "proyecto-paginaweb",
+    storageBucket: "proyecto-paginaweb.appspot.com",
+    messagingSenderId: "122327468380"
+  };
+  firebase.initializeApp(config);
+</script>
+<script src="https://www.gstatic.com/firebasejs/4.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.10.1/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.10.1/firebase-firestore.js"></script>
+</html>
+<!-- AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlol-->
+
+<script>
+var giflink="";
+
+function changegif(){
+  var giphy= $.get("https://api.giphy.com/v1/gifs/random?api_key=5SFxkkWzX4Qn8M3oQQEIxNQuwpTki2xL&tag=cat&rating=G");
+  giphy.done(function(data) {
+     console.log("success got data", data);
+     giflink=data.data.image_url
+    });
+}
+changegif();
+var app = new Vue({
+  el: '#app',
+  data: {
+    tasks: [
+      {text:'Hello Vue.js!', date:'jajajaj',index:0},
+    ],
+    mess2: {text:'task..', date:'date..',index:0},
+    counter:0,
+    currentgif: "",
+  },
+  methods: {
+    addthis: function(){
+      this.counter++;
+      this.tasks.push({text:this.mess2.text,date:this.mess2.date,index:this.counter});
+      this.mess2.text='';
+      this.mess2.date='';
+    },
+    deletthis: function(index){
+      this.tasks.splice(index,1);
+      changegif();
+      this.currentgif=giflink;
+      document.getElementById("gp").innerHTML='<amp-img alt="hola pto" src="'+this.currentgif+'" width="300" height="300"></amp-img>';
+    }
+  }
+})
+var appb = new Vue({
+  el: '#appb',
+  data: {
+    status: 'no has iniciado sesion'
+  },
+  methods: {
+    reverseMessage: function () {
+      this.status = this.status.split('').reverse().join('')
+    }
+  }
+})
+// app.js
+
+window.addEventListener('load', function() {
+
+  var webAuth = new auth0.WebAuth({
+    domain: 'lezoran.auth0.com',
+    clientID: 'DAlt-Vc8wajc_wBccLoU51XHVzzuLHka',
+    responseType: 'token id_token',
+    audience: 'https://lezoran.auth0.com/userinfo',
+    scope: 'openid',
+    redirectUri: window.location.href
+  });
+
+  var loginBtn = document.getElementById('btn-login');
+  loginBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    webAuth.authorize();
+  });
+
+});
+
+
+
+var config={
+
+};
+firebase.initializeApp(config);
+</script>
+<!-- AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlol-->
+
+<style>
+body{
+  background-color: #F7D7D4;
+}
+.titulo{
+  color: white;
+  font-family: "Lucida Console", Monaco, monospace;
+  font-size: 3vw
+}
+p{
+  font-family: "Lucida Console", Monaco, monospace;
+  font-size: 1vw
+}
+</style>
