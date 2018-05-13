@@ -63,26 +63,26 @@
 </body>
 <script src="https://cdn.auth0.com/js/auth0/9.3.1/auth0.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/4.13.0/firebase.js"></script>
-<script>
-  // Initialize Firebase
-  var config = {
-    apiKey: "AIzaSyDt9rFr2XngLvJtkG9Fd2oV-oAQU4ETM1I",
-    authDomain: "proyecto-paginaweb.firebaseapp.com",
-    databaseURL: "https://proyecto-paginaweb.firebaseio.com",
-    projectId: "proyecto-paginaweb",
-    storageBucket: "proyecto-paginaweb.appspot.com",
-    messagingSenderId: "122327468380"
-  };
-  firebase.initializeApp(config);
-</script>
+
 <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/4.10.1/firebase-auth.js"></script>
+
 <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase-database.js"></script>
-<script src="https://www.gstatic.com/firebasejs/4.10.1/firebase-firestore.js"></script>
+
 </html>
 <!-- AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlol-->
 
 <script>
+
+var config = {
+  apiKey: "AIzaSyDt9rFr2XngLvJtkG9Fd2oV-oAQU4ETM1I",
+  authDomain: "proyecto-paginaweb.firebaseapp.com",
+  databaseURL: "https://proyecto-paginaweb.firebaseio.com",
+  projectId: "proyecto-paginaweb",
+  storageBucket: "proyecto-paginaweb.appspot.com",
+  messagingSenderId: "122327468380"
+};
+var fbapp=firebase.initializeApp(config);
+var database = fbapp.database();
 var giflink="";
 var name="no has iniciado sesion";
 
@@ -135,7 +135,6 @@ var appb = new Vue({
 })
 
 window.addEventListener('load', function() {
-
   var webAuth = new auth0.WebAuth({
     domain: 'lezoran.auth0.com',
     clientID: 'DAlt-Vc8wajc_wBccLoU51XHVzzuLHka',
@@ -144,7 +143,9 @@ window.addEventListener('load', function() {
     scope: 'openid profile',
     redirectUri: window.location.href
   });
+
   handleAuthentication();
+  console.log(database.ref('hola').once('value'))
 
   var loginBtn = document.getElementById('btn-login');
   loginBtn.addEventListener('click', function(e) {
@@ -183,11 +184,11 @@ window.addEventListener('load', function() {
       localStorage.setItem('id_token', authResult.idToken);
       var accessToken= localStorage.getItem('access_token');
       webAuth.client.userInfo(accessToken, function(err, profile) {
-     if (profile) {
-       var userProfile = profile;
-       console.log(userProfile);
-       name=userProfile.nickname;
-       appb.setnickname();
+        if (profile) {
+        var userProfile = profile;
+        console.log(userProfile);
+        name=userProfile.nickname;
+        appb.setnickname();
      }
      else{
        console.log("se intento lololol");
@@ -197,14 +198,6 @@ window.addEventListener('load', function() {
 });
 
 
-
-
-
-
-var config={
-
-};
-firebase.initializeApp(config);
 </script>
 <!-- AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlol-->
 
