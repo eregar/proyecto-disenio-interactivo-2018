@@ -81,10 +81,11 @@ var config = {
   storageBucket: "proyecto-paginaweb.appspot.com",
   messagingSenderId: "122327468380"
 };
+
 var fbapp=firebase.initializeApp(config);
 var database = fbapp.database();
 var giflink="";
-var name="no has iniciado sesion";
+var temp=[];
 
 function changegif(){
   var giphy= $.get("https://api.giphy.com/v1/gifs/random?api_key=5SFxkkWzX4Qn8M3oQQEIxNQuwpTki2xL&tag=cat&rating=G");
@@ -102,34 +103,56 @@ var app = new Vue({
     ],
     mess2: {text:'task..', date:'date..',index:0},
     counter:0,
+    number:1,
     currentgif: "",
   },
   methods: {
     addthis: function(){
       this.counter++;
+      this.number++;
       this.tasks.push({text:this.mess2.text,date:this.mess2.date,index:this.counter});
       this.mess2.text='';
       this.mess2.date='';
+      database.ref('hola/'+appb.getname()).set({
+        tasks: this.tasks,
+        number: this.number,
+      });
     },
     deletthis: function(index){
       this.tasks.splice(index,1);
+      this.number=this.number-1;
       changegif();
       this.currentgif=giflink;
       document.getElementById("gp").innerHTML='<amp-img alt="hola pto" src="'+this.currentgif+'" width="300" height="300"></amp-img>';
+    },
+    downloadarray: function(){
+      database.ref(appb.getname() +'/').once('value').then(function(snapshot){
+        app.number=snapshot.child('number').val();
+        for (var i = 0; i <app.number; i++) {
+          temp=snapshot.child('tasks/'+i+'/').val();
+          console.log(temp);
+          app.tasks.push(temp);
+        }
+      });
+    },
+    cleararray: function(){
+      this.tasks.splice(0,this.number);
     }
   }
 })
 var appb = new Vue({
   el: '#appb',
   data: {
-    status: name
+    status: 'no has iniciado sesion',
+    nombre: ''
   },
   methods: {
-    reverseMessage: function () {
-      this.status = this.status.split('').reverse().join('')
+    setnickname: function(nickname,name){
+      this.status=nickname;
+      this.nombre=name;
     },
-    setnickname: function(){
-      this.status=name;
+    getname: function(){
+      return this.nombre;
     }
   }
 })
@@ -145,7 +168,15 @@ window.addEventListener('load', function() {
   });
 
   handleAuthentication();
-  console.log(database.ref('proyecto-paginaweb/hola').once('value'))
+  if(localStorage.getItem('access_token')){
+    app.cleararray();
+    app.downloadarray();
+  }
+
+  database.ref('hola/'+appb.getname() +'/').once('value').then(function(snapshot){
+    console.log(snapshot.val());
+  });
+
 
   var loginBtn = document.getElementById('btn-login');
   loginBtn.addEventListener('click', function(e) {
@@ -162,8 +193,8 @@ window.addEventListener('load', function() {
     // Remove tokens and expiry time from localStorage
     localStorage.removeItem('access_token');
     localStorage.removeItem('id_token');
-    name="no has iniciado sesion";
-    appb.setnickname();
+    localStorage.removeItem('username');
+    appb.setnickname('no has iniciado sesion','');
   }
 
   function handleAuthentication() {
@@ -182,13 +213,14 @@ window.addEventListener('load', function() {
     function setSession(authResult) {
       localStorage.setItem('access_token', authResult.accessToken);
       localStorage.setItem('id_token', authResult.idToken);
+
       var accessToken= localStorage.getItem('access_token');
       webAuth.client.userInfo(accessToken, function(err, profile) {
         if (profile) {
         var userProfile = profile;
         console.log(userProfile);
-        name=userProfile.nickname;
-        appb.setnickname();
+        localStorage.setItem('username', userProfile.name);
+        appb.setnickname(userProfile.nickname,userProfile.name);
      }
      else{
        console.log("se intento lololol");
