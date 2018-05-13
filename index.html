@@ -127,6 +127,9 @@ var appb = new Vue({
   methods: {
     reverseMessage: function () {
       this.status = this.status.split('').reverse().join('')
+    },
+    setnickname: function(){
+      this.status=name;
     }
   }
 })
@@ -186,6 +189,8 @@ window.addEventListener('load', function() {
        console.log(userProfile);
        console.log(userProfile.nickname);
        name=userProfile.nickname;
+       appb.setnickname();
+       console.log(name);
      }
      else{
        console.log("se intento lololol");
