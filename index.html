@@ -155,7 +155,6 @@ window.addEventListener('load', function() {
           window.location.hash = '';
           console.log(authResult);
         } else if (err) {
-          homeView.style.display = 'inline-block';
           console.log(err);
           alert(
             'Error: ' + err.error + '. Check the console for further details.'
