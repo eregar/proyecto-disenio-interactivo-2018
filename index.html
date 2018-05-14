@@ -113,7 +113,7 @@ var app = new Vue({
       this.tasks.push({text:this.mess2.text,date:this.mess2.date,index:this.counter});
       this.mess2.text='';
       this.mess2.date='';
-      database.ref('hola/'+appb.getname()).set({
+      database.ref(appb.getname()).set({
         tasks: this.tasks,
         number: this.number,
       });
@@ -177,11 +177,6 @@ window.addEventListener('load', function() {
     app.cleararray();
     app.downloadarray();
   }
-
-  database.ref('hola/'+appb.getname() +'/').once('value').then(function(snapshot){
-    console.log(snapshot.val());
-  });
-
 
   var loginBtn = document.getElementById('btn-login');
   loginBtn.addEventListener('click', function(e) {
