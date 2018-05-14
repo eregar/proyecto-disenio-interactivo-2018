@@ -107,22 +107,36 @@ var app = new Vue({
   },
   methods: {
     addthis: function(){
-      this.counter++;
-      this.number++;
-      this.tasks.push({text:this.mess2.text,date:this.mess2.date,index:this.counter});
-      this.mess2.text='';
-      this.mess2.date='';
-      database.ref(appb.getname()).set({
-        tasks: this.tasks,
-        number: this.number,
-      });
+      if(localStorage.getItem('nickname')){
+        this.counter++;
+        this.number++;
+        this.tasks.push({text:this.mess2.text,date:this.mess2.date,index:this.counter});
+        this.mess2.text='';
+        this.mess2.date='';
+        database.ref(appb.getname()).set({
+          tasks: this.tasks,
+          number: this.number,
+        });
+      }
+      else {
+        alert('no se puede agregar a la lista, no se ha iniciado sesion');
+      }
     },
     deletthis: function(index){
-      this.tasks.splice(index,1);
-      this.number=this.number-1;
-      changegif();
-      this.currentgif=giflink;
-      document.getElementById("gp").innerHTML='<amp-img alt="hola pto" src="'+this.currentgif+'" width="300" height="300"></amp-img>';
+      if(localStorage.getItem('nickname')){
+        this.tasks.splice(index,1);
+        this.number=this.number-1;
+        database.ref(appb.getname()).set({
+          tasks: this.tasks,
+          number: this.number,
+        });
+        changegif();
+        this.currentgif=giflink;
+        document.getElementById("gp").innerHTML='<amp-img alt="hola pto" src="'+this.currentgif+'" width="300" height="300"></amp-img>';
+      }
+      else {
+        alert('no se puede agregar a la lista, no se ha iniciado sesion');
+      }
     },
     downloadarray: function(){
       database.ref(appb.getname() +'/').once('value').then(function(snapshot){
@@ -172,7 +186,7 @@ window.addEventListener('load', function() {
   handleAuthentication();
   if(localStorage.getItem('username')){
     appb.setnickname(localStorage.getItem('username'));
-    
+
     app.cleararray();
     app.downloadarray();
   }
