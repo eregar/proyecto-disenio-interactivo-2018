@@ -209,15 +209,6 @@ window.addEventListener('load', function() {
     function setSession(authResult) {
       localStorage.setItem('access_token', authResult.accessToken);
       localStorage.setItem('id_token', authResult.idToken);
-      
-      if(localStorage.getItem('access_token')){
-        app.cleararray();
-        app.downloadarray();
-        console.log("se realizo");
-      }
-      else{
-        console.log("no se realizo");
-      }
       var accessToken= localStorage.getItem('access_token');
       webAuth.client.userInfo(accessToken, function(err, profile) {
         if (profile) {
@@ -225,6 +216,9 @@ window.addEventListener('load', function() {
         console.log(userProfile);
         localStorage.setItem('username', userProfile.nickname);
         appb.setnickname(userProfile.nickname,userProfile.name);
+        app.cleararray();
+        app.downloadarray();
+        console.log("se realizo");
      }
      else{
        console.log("se intento lololol");
