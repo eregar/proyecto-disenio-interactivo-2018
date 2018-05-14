@@ -161,7 +161,14 @@ var appb = new Vue({
     }
   }
 })
-
+if(localStorage.getItem('access_token')){
+  app.cleararray();
+  app.downloadarray();
+  console.log("se realizo");
+}
+else{
+  console.log("no se realizo");
+}
 window.addEventListener('load', function() {
   var webAuth = new auth0.WebAuth({
     domain: 'lezoran.auth0.com',
@@ -173,14 +180,7 @@ window.addEventListener('load', function() {
   });
 
   handleAuthentication();
-  if(localStorage.getItem('access_token')){
-    app.cleararray();
-    app.downloadarray();
-    console.log("se realizo");
-  }
-  else{
-    console.log("no se realizo");
-  }
+
 
   var loginBtn = document.getElementById('btn-login');
   loginBtn.addEventListener('click', function(e) {
@@ -223,7 +223,7 @@ window.addEventListener('load', function() {
         if (profile) {
         var userProfile = profile;
         console.log(userProfile);
-        localStorage.setItem('username', userProfile.name);
+        localStorage.setItem('username', userProfile.nickname);
         appb.setnickname(userProfile.nickname,userProfile.name);
      }
      else{
