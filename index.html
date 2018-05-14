@@ -22,7 +22,7 @@
           <div class= "right floated column" id="appb">
             <p style="color: white; text-align: center; font-size: 1.2vw">
                {{status}}
-              <button id="btn-login">{{ inout }}</button>
+               <button class="ui red button"id="btn-login">{{ inout }}</button>
             </p>
           </div>
         </div>
@@ -37,7 +37,7 @@
       <input v-model="mess2.text">
     </div>
   </div>
-  <div class="four wide column">
+  <div class="six wide column">
     <div class="ui fluid action input">
       <input v-model="mess2.date">
       <button v-on:click="addthis()" class="ui red button">add</button>
@@ -46,11 +46,11 @@
   </div>
   <div class="row">
   <div class="red eight wide column row"></div>
-  <div class="blue four wide column"></div>
+  <div class="blue six wide column"></div>
   </div>
   <div class="row" v-for="(task, index) in tasks">
     <div class="grey eight wide column">{{task.text}}</div>
-    <div class="grey four wide column">
+    <div class="grey six wide column">
       {{task.date}}
       <button class="ui red button"style="float:right;" v-on:click="deletthis(index)">-</button>
     </div>
