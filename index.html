@@ -152,7 +152,12 @@ var appb = new Vue({
       this.nombre=name;
     },
     getname: function(){
-      return this.nombre;
+      if(this.status=='no has iniciado sesion'){
+        return '';
+      }
+      else{
+        return this.status;
+      }
     }
   }
 })
