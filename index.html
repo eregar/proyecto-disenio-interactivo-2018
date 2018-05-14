@@ -176,6 +176,10 @@ window.addEventListener('load', function() {
   if(localStorage.getItem('access_token')){
     app.cleararray();
     app.downloadarray();
+    console.log("se realizo");
+  }
+  else{
+    console.log("no se realizo");
   }
 
   var loginBtn = document.getElementById('btn-login');
