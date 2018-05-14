@@ -90,7 +90,6 @@ var temp=[];
 function changegif(){
   var giphy= $.get("https://api.giphy.com/v1/gifs/random?api_key=5SFxkkWzX4Qn8M3oQQEIxNQuwpTki2xL&tag=cat&rating=G");
   giphy.done(function(data) {
-     console.log("success got data", data);
      giflink=data.data.image_url
     });
 }
@@ -161,14 +160,7 @@ var appb = new Vue({
     }
   }
 })
-if(localStorage.getItem('access_token')){
-  app.cleararray();
-  app.downloadarray();
-  console.log("se realizo");
-}
-else{
-  console.log("no se realizo");
-}
+
 window.addEventListener('load', function() {
   var webAuth = new auth0.WebAuth({
     domain: 'lezoran.auth0.com',
@@ -217,7 +209,15 @@ window.addEventListener('load', function() {
     function setSession(authResult) {
       localStorage.setItem('access_token', authResult.accessToken);
       localStorage.setItem('id_token', authResult.idToken);
-
+      
+      if(localStorage.getItem('access_token')){
+        app.cleararray();
+        app.downloadarray();
+        console.log("se realizo");
+      }
+      else{
+        console.log("no se realizo");
+      }
       var accessToken= localStorage.getItem('access_token');
       webAuth.client.userInfo(accessToken, function(err, profile) {
         if (profile) {
