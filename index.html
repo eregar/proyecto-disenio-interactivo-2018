@@ -22,7 +22,7 @@
           <div class= "right floated column" id="appb">
             <p style="color: white; text-align: center; font-size: 1.2vw">
                {{status}}
-              <button id="btn-login">login</button>
+              <button id="btn-login">{{ inout }}</button>
             </p>
           </div>
         </div>
@@ -107,7 +107,7 @@ var app = new Vue({
   },
   methods: {
     addthis: function(){
-      if(localStorage.getItem('nickname')){
+      if(localStorage.getItem('username')){
         this.counter++;
         this.number++;
         this.tasks.push({text:this.mess2.text,date:this.mess2.date,index:this.counter});
@@ -123,7 +123,7 @@ var app = new Vue({
       }
     },
     deletthis: function(index){
-      if(localStorage.getItem('nickname')){
+      if(localStorage.getItem('username')){
         this.tasks.splice(index,1);
         this.number=this.number-1;
         database.ref(appb.getname()).set({
@@ -157,6 +157,7 @@ var appb = new Vue({
   el: '#appb',
   data: {
     status: 'no has iniciado sesion',
+    inout: 'login'
   },
   methods: {
     setnickname: function(nickname){
@@ -168,6 +169,14 @@ var appb = new Vue({
       }
       else{
         return this.status;
+      }
+    },
+    setinout: function(tru){
+      if(tru){
+        this.inout='logout'
+      }
+      else{
+        this.inout='login'
       }
     }
   }
@@ -186,7 +195,7 @@ window.addEventListener('load', function() {
   handleAuthentication();
   if(localStorage.getItem('username')){
     appb.setnickname(localStorage.getItem('username'));
-
+    appb.setinout(true);
     app.cleararray();
     app.downloadarray();
   }
@@ -207,6 +216,7 @@ window.addEventListener('load', function() {
     localStorage.removeItem('access_token');
     localStorage.removeItem('id_token');
     localStorage.removeItem('username');
+    appb.setinout(false);
     app.cleararray();
     appb.setnickname('no has iniciado sesion');
   }
@@ -236,6 +246,7 @@ window.addEventListener('load', function() {
         appb.setnickname(userProfile.nickname);
         app.cleararray();
         app.downloadarray();
+        appb.setinout(true);
         console.log("se realizo");
      }
      else{
