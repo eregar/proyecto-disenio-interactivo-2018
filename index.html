@@ -143,12 +143,10 @@ var appb = new Vue({
   el: '#appb',
   data: {
     status: 'no has iniciado sesion',
-    nombre: ''
   },
   methods: {
-    setnickname: function(nickname,name){
+    setnickname: function(nickname){
       this.status=nickname;
-      this.nombre=name;
     },
     getname: function(){
       if(this.status=='no has iniciado sesion'){
@@ -172,7 +170,12 @@ window.addEventListener('load', function() {
   });
 
   handleAuthentication();
-
+  if(localStorage.getItem('username')){
+    appb.setnickname(localStorage.getItem('username'));
+    
+    app.cleararray();
+    app.downloadarray();
+  }
 
   var loginBtn = document.getElementById('btn-login');
   loginBtn.addEventListener('click', function(e) {
@@ -190,7 +193,8 @@ window.addEventListener('load', function() {
     localStorage.removeItem('access_token');
     localStorage.removeItem('id_token');
     localStorage.removeItem('username');
-    appb.setnickname('no has iniciado sesion','');
+    app.cleararray();
+    appb.setnickname('no has iniciado sesion');
   }
 
   function handleAuthentication() {
@@ -215,7 +219,7 @@ window.addEventListener('load', function() {
         var userProfile = profile;
         console.log(userProfile);
         localStorage.setItem('username', userProfile.nickname);
-        appb.setnickname(userProfile.nickname,userProfile.name);
+        appb.setnickname(userProfile.nickname);
         app.cleararray();
         app.downloadarray();
         console.log("se realizo");
